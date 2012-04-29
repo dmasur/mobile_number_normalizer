@@ -1,4 +1,5 @@
 # MobileNumberNormalizer
+[![Build Status](https://secure.travis-ci.org/TBAA/mobile_number_normalizer.png?branch=master)](http://travis-ci.org/TBAA/mobile_number_normalizer)
 This Gem introduce a MobileNumberNormalizer. It normalize mobile phone numbers and was tested againt
 many german and international mobile numbers.
 
