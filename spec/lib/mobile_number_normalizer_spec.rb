@@ -179,4 +179,26 @@ describe MobileNumberNormalizer do
       MobileNumberNormalizer.get_number("0018091234567111").should == "0018091234567111"
     end
   end
+  describe ".add_area_code" do
+    before do
+      MobileNumberNormalizer.valid_area_codes = []
+    end
+    it "should add +49" do
+      MobileNumberNormalizer.add_area_code "+49"
+      MobileNumberNormalizer.valid_area_codes.should == ['0049']
+    end
+    it "should add 0049" do
+      MobileNumberNormalizer.add_area_code "0049"
+      MobileNumberNormalizer.valid_area_codes.should == ['0049']
+    end
+    it "should add 49" do
+      MobileNumberNormalizer.add_area_code "49"
+      MobileNumberNormalizer.valid_area_codes.should == ['0049']
+    end
+    it "should not add double codes" do
+      MobileNumberNormalizer.add_area_code "+49"
+      MobileNumberNormalizer.add_area_code "+49"
+      MobileNumberNormalizer.valid_area_codes.should == ['0049']
+    end
+  end
 end

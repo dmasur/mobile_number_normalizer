@@ -51,7 +51,12 @@ class MobileNumberNormalizer
     @@valid_area_codes
   end
 
-  def initialize(mobile_number, valid_area_codes = [])
+  def self.add_area_code(new_area_code)
+    area_code = '00' + new_area_code.sub(/^[^1-9]*/, '')
+    @@valid_area_codes << area_code unless @@valid_area_codes.include? area_code
+  end
+
+  def initialize(mobile_number)
     @mobile_number = mobile_number
   end
 
