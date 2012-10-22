@@ -166,6 +166,10 @@ describe MobileNumberNormalizer do
       MobileNumberNormalizer.get_number("0049 176 12345678; 0043 6712345678").
         should == "004917612345678"
     end
+    it "give number for 123456" do
+      MobileNumberNormalizer.get_number("123456").
+        should be_blank
+    end
   end
   describe "area codes" do
     it "should accept right area code" do

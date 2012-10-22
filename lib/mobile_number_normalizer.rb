@@ -16,7 +16,7 @@ class MobileNumberNormalizer
   # Array of String of International Area Codes
   #
   # @author dmasur
-  VALID_INTERNATIONAL_AREA_CODE = [ '001', '001809', '0020', '00212', '00213', '00216', '00218',
+  @@valid_area_codes = [ '001', '001809', '0020', '00212', '00213', '00216', '00218',
                                     '00220', '00221', '00222', '00223', '00224', '00225', '00226',
                                     '00227', '00228', '00229', '00230', '00231', '00232', '00233',
                                     '00234', '00235', '00236', '00237', '00238', '00239', '00240',
@@ -43,7 +43,15 @@ class MobileNumberNormalizer
                                     '00962', '00963', '00964', '00965', '00966', '00967', '00968',
                                     '00971', '00972', '00973', '00974', '00975', '00976', '00977',
                                     '0098', '00994' ]
-  def initialize(mobile_number)
+  def self.valid_area_codes=(new_valid_area_codes)
+    @@valid_area_codes = new_valid_area_codes
+  end
+
+  def self.valid_area_codes
+    @@valid_area_codes
+  end
+
+  def initialize(mobile_number, valid_area_codes = [])
     @mobile_number = mobile_number
   end
 
@@ -52,7 +60,6 @@ class MobileNumberNormalizer
   #
   # @author dmasur
   def self.get_number number
-    $delete_mobile_numbers ||= []
     number = new(number).get_number
     return number
   end
@@ -71,7 +78,6 @@ class MobileNumberNormalizer
     clean_mobile_number
     #puts "After clean: #{@mobile_number}"
     mobile_number = "" unless has_valid_area_code?
-    $delete_mobile_numbers << org_num if @mobile_number.blank? && !org_num.blank?
     return @mobile_number
   end
 
@@ -166,7 +172,7 @@ class MobileNumberNormalizer
   end
 
   def has_valid_area_code?
-    VALID_INTERNATIONAL_AREA_CODE.any? do |area_code|
+    self.class.valid_area_codes.any? do |area_code|
       Regexp.new("^#{area_code}") =~ @mobile_number
     end
   end
@@ -180,7 +186,7 @@ class MobileNumberNormalizer
     mobile_number = "0#{mobile_number}" if /^1/ =~ mobile_number
     mobile_number.sub!(/^49/, '0049')
     mobile_number.sub!(/\+/, '00')
-    VALID_INTERNATIONAL_AREA_CODE.each do |area_code|
+    valid_area_codes.each do |area_code|
       if mobile_number.start_with?(area_code[2..-1])
         mobile_number = "00#{mobile_number}"
       end
