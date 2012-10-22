@@ -52,7 +52,7 @@ class MobileNumberNormalizer
   end
 
   def self.add_area_code(new_area_code)
-    area_code = '00' + new_area_code.sub(/^[^1-9]*/, '')
+    area_code = '00' + new_area_code.to_s.sub(/^[^1-9]*/, '')
     @@valid_area_codes << area_code unless @@valid_area_codes.include? area_code
   end
 
